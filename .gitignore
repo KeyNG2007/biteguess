@@ -1,0 +1,11 @@
+data/
+models/
+.venv/
+.env
+__pycache__/
+*.pyc
+work/
+
+# Local learning notes
+学习与交付路线.md
+docs/day01.md

@@ -1,0 +1,40 @@
+{
+  "labels_zh": {
+    "cake": "蛋糕类",
+    "noodles": "面食类",
+    "rice": "米饭料理类",
+    "dumplings": "饺子类",
+    "pizza": "披萨类",
+    "salad": "沙拉类"
+  },
+  "groups": {
+    "cake": [
+      "cheesecake",
+      "chocolate_cake",
+      "carrot_cake",
+      "red_velvet_cake"
+    ],
+    "noodles": [
+      "spaghetti_bolognese",
+      "spaghetti_carbonara",
+      "ramen",
+      "pho"
+    ],
+    "rice": [
+      "fried_rice",
+      "risotto"
+    ],
+    "dumplings": [
+      "dumplings",
+      "gyoza"
+    ],
+    "pizza": [
+      "pizza"
+    ],
+    "salad": [
+      "caesar_salad",
+      "greek_salad"
+    ]
+  },
+  "seed": 42
+}

@@ -1,0 +1,23 @@
+{
+  "counts": {
+    "caesar_salad": 1000,
+    "carrot_cake": 1000,
+    "cheesecake": 1000,
+    "chocolate_cake": 1000,
+    "dumplings": 1000,
+    "fried_rice": 1000,
+    "greek_salad": 1000,
+    "gyoza": 1000,
+    "ice_cream": 1000,
+    "pho": 1000,
+    "pizza": 1000,
+    "ramen": 1000,
+    "red_velvet_cake": 1000,
+    "risotto": 1000,
+    "spaghetti_bolognese": 1000,
+    "spaghetti_carbonara": 1000,
+    "steak": 1000,
+    "sushi": 1000
+  },
+  "official_split_checked": true
+}
