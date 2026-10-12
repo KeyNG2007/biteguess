@@ -1,0 +1,19 @@
+{
+  "purpose": "first full training baseline; validation only, test held out",
+  "wall_seconds": 1356.5141217999626,
+  "save_dir": "C:\\Users\\lenovo\\Desktop\\\u7f8e\u98df\u731c\u731c\u770b\\models\\yolo_runs\\baseline_10epochs",
+  "settings": {
+    "epochs": 10,
+    "imgsz": 320,
+    "batch": 4,
+    "device": "cpu",
+    "seed": 42
+  },
+  "metrics": {
+    "metrics/precision(B)": 0.7907487788208,
+    "metrics/recall(B)": 0.8008614059298951,
+    "metrics/mAP50(B)": 0.8052833597398873,
+    "metrics/mAP50-95(B)": 0.565715086748763,
+    "fitness": 0.565715086748763
+  }
+}

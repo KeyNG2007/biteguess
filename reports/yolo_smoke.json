@@ -1,0 +1,41 @@
+{
+  "purpose": "pipeline and timing only, not final accuracy",
+  "samples": {
+    "train": {
+      "images": 40,
+      "boxes_by_class": {
+        "0": 11,
+        "1": 9,
+        "2": 8,
+        "3": 8,
+        "4": 9
+      }
+    },
+    "val": {
+      "images": 15,
+      "boxes_by_class": {
+        "0": 4,
+        "1": 4,
+        "2": 3,
+        "3": 3,
+        "4": 3
+      }
+    }
+  },
+  "wall_seconds": 18.686914599966258,
+  "save_dir": "C:\\Users\\lenovo\\Desktop\\\u7f8e\u98df\u731c\u731c\u770b\\models\\yolo_runs\\smoke",
+  "settings": {
+    "epochs": 1,
+    "imgsz": 320,
+    "batch": 4,
+    "device": "cpu",
+    "seed": 42
+  },
+  "metrics": {
+    "metrics/precision(B)": 0.4030411972722187,
+    "metrics/recall(B)": 0.26666666666666666,
+    "metrics/mAP50(B)": 0.2135016375937624,
+    "metrics/mAP50-95(B)": 0.1323798261802158,
+    "fitness": 0.1323798261802158
+  }
+}

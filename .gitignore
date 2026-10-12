@@ -9,3 +9,8 @@ work/
 # Local learning notes
 学习与交付路线.md
 docs/day01.md
+
+# Local dataset-derived visualizations
+reports/**/*.jpg
+reports/**/*.png
+yolo_demo_conf025/
