@@ -1,28 +1,57 @@
 # 美食猜猜看
 
-六类食物识别与双模型拒答挑战。交付目标：2026-10-18。
+YOLO 食物检测与多模态大模型对比项目。交付目标：2026-10-18。
 
-## 两条独立路线
+## 当前技术路线（2026-10-12 更新）
 
-- 传统模型：微调预训练 ResNet18。
-- 多模态模型：对同一图片使用相同类别清单，允许拒答。
+- 传统方案：小型 YOLO 检测模型，输出类别、边界框、置信度及数量。
+- 多模态方案：独立分析同一张原图，按相同支持类别输出结构化识别结果，允许表示无法确定。
+- 展示：FastAPI 与简单 HTML 页面，并排显示结果和耗时，支持答案揭晓。
+- 学习实验：SAM 点／框提示分割，以及使用 YOLO 框作为分割提示。
 
-目前完成项目初始化与类别映射，尚未训练模型或实现 API。
+## 数据与支持范围
 
-## 数据
+检测主数据采用 UEC FOOD 100。已下载 `data/dataset100.zip`（991,355,222 字节，与官方响应头一致），已从压缩包读取类别表和 100 份 `bb_info.txt` 标注文件；已完成选定类别标注读取、样例检查和 YOLO 数据转换；全包 CRC 核验尚未记录。
 
-Food-101 官方页面：https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/
+检测方案从原六类调整为五类候选，移除蛋糕类：当前读取的 UEC FOOD 100 类别表没有对应蛋糕类别。以下映射已经过样例与数量核验，并用于首版训练。
 
-完整下载约 5 GB，解压需要额外空间。数据与权重不入 Git。
-下载：`python scripts/download_food101.py`
-下载完成后先检查归档，再按所需类别安全解压和建立划分；暂不自动解压。
+| 项目类别 | UEC FOOD 100 原始类别编号与名称 |
+| --- | --- |
+| 米饭料理 | 1 rice、3 pilaf、9 fried rice |
+| 面食 | 20 udon noodle、22 soba noodle、23 ramen noodle、27 spaghetti |
+| 饺子 | 42 jiaozi |
+| 披萨 | 18 pizza |
+| 沙拉 | 86 potato salad、87 green salad、88 macaroni salad |
 
-类别映射见 `configs/classes.json`。保留官方训练／测试边界，从训练部分划出验证集；各阶段保存抽样记录。
-粗类别仅覆盖映射中的子类，不代表支持全部同类料理。
+官方介绍：http://foodcam.mobi/dataset100.html 。官方限定非商业研究用途，项目说明应注明来源与使用范围，不将图片随代码重新发布。同一照片可能出现在多个类别目录，转换时合并所选类别框、去重并按图片划分，防止跨集合泄漏。原始框为像素坐标，需要根据实际图片宽高转换成 YOLO 归一化标签。
 
-## 配置与状态
+当前 `configs/classes.json` 为五类检测配置，类别编号依次为米饭料理 0、面食 1、饺子 2、披萨 3、沙拉 4。通用 COCO YOLO 权重不支持全部五类，需要在真实标注上微调才能形成项目模型。
 
-API 配置模板见 `.env.example`，不要提交真实密钥。
-当前 Python 环境未安装 PyTorch／torchvision／FastAPI。确认训练设备后再选择并安装适合的版本。
+Food-101 图片仅保留为早期探索素材和 YOLO 阈值演示输入。旧分类脚本、清单、报告和冒烟权重已清理，当前检测数据采用 UEC FOOD 100。
+
+Food-101 来源：https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/
+
+## 实现状态
+
+已完成项目初始化、Food-101 子集核验、分类清单及 CPU 虚拟环境；PyTorch、torchvision、Pillow、NumPy、scikit-learn、FastAPI、uvicorn 已安装。
+
+ResNet18 探索已结束，相关脚本与临时实验产物已移除；历史 Git 提交保持原样。
+
+已安装 Ultralytics 8.4.175，加载 YOLO11n 权重并通过 scripts/demo_yolo.py 完成披萨单图检测。本人已运行阈值 0.90／0.25 对照实验，结果分别为无框／保留分数约 0.842 的披萨框。检测数据转换和五类基线训练已完成；SAM 实验、多模态接口、页面与最终评估尚未完成。本 README 尚非完整安装启动指南，后续随实现补齐。
+
+## 配置与仓库约定
+
+API 配置模板见 `.env.example`，真实密钥不入库。数据、权重和 `.venv` 保持本地；学习路线与个人学习笔记不提交。代码、依赖说明、数据准备与评估规则随实际进展持续提交。
 
 
+
+
+## 已完成的数据与基线
+
+像素内容去重后 2,327 张图片：训练 1,627、验证 350、测试 350。多类标注合并，完全重复图片不跨集合，近似重复仍需检查。计数为食物区域数，不代表单只饺子数量。
+
+YOLO11n CPU 基线训练 10 轮，imgsz=320、batch=4、seed=42，总耗时约 22 分 37 秒。最佳模型验证 Precision=0.7907、Recall=0.8009、mAP50=0.8053、mAP50–95=0.5657；测试集未参与选模型。
+
+数据转换脚本：scripts/prepare_uecfood100.py；小样本训练：scripts/train_yolo_smoke.py；完整基线：scripts/train_yolo_baseline.py。转换读取 configs/detection_classes.json；已有转换结果时拒绝覆盖。权重位于 models/yolo_runs/baseline_10epochs/weights，不入库。
+
+scripts/demo_yolo.py 仍加载通用 COCO 权重，不是五类基线推理入口。完整启动指南与依赖清单待整理，当前尚未交付可运行双模型应用。

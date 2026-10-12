@@ -1,0 +1,63 @@
+{
+  "seed": 42,
+  "split_method": "70/15/15 within supported-class-set strata, rounded; grouped by decoded pixel SHA256",
+  "source_unique_ids": 2389,
+  "unique_images": 2327,
+  "duplicate_box_rows_removed": 3,
+  "splits": {
+    "train": {
+      "images": 1627,
+      "boxes_by_class": {
+        "rice": 637,
+        "noodles": 573,
+        "salad": 408,
+        "dumplings": 117,
+        "pizza": 94
+      },
+      "images_by_class": {
+        "rice": 604,
+        "noodles": 562,
+        "salad": 391,
+        "dumplings": 113,
+        "pizza": 94
+      }
+    },
+    "val": {
+      "images": 350,
+      "boxes_by_class": {
+        "rice": 134,
+        "salad": 93,
+        "dumplings": 30,
+        "noodles": 123,
+        "pizza": 20
+      },
+      "images_by_class": {
+        "rice": 131,
+        "salad": 85,
+        "dumplings": 26,
+        "noodles": 120,
+        "pizza": 20
+      }
+    },
+    "test": {
+      "images": 350,
+      "boxes_by_class": {
+        "pizza": 20,
+        "salad": 88,
+        "dumplings": 26,
+        "rice": 138,
+        "noodles": 124
+      },
+      "images_by_class": {
+        "pizza": 20,
+        "salad": 85,
+        "dumplings": 26,
+        "rice": 131,
+        "noodles": 120
+      }
+    }
+  },
+  "scope": "counts refer to annotated food regions, not individual dumplings; exact duplicates grouped, near duplicates not automatically resolved",
+  "source": "http://foodcam.mobi/dataset100.html",
+  "usage": "non-commercial research only"
+}
