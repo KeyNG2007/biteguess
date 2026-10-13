@@ -3,9 +3,9 @@ from collections import Counter
 from pathlib import Path
 import httpx
 from PIL import Image, UnidentifiedImageError
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import HTMLResponse
-from ultralytics import YOLO
+from ultralytics import YOLO, SAM
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=['rice','noodles','dumplings','pizza','salad']
 for line in (ROOT/'.env').read_text(encoding='utf-8-sig').splitlines() if (ROOT/'.env').exists() else []:
@@ -68,3 +68,45 @@ async def analyze(file:UploadFile=File(...)):
     processed=jpeg(image)
     yolo,vision=await asyncio.gather(safe_call(local_async,image),safe_call(remote_predict,processed))
     return {'yolo':yolo,'vision':vision,'input_size':image.size,'scope':'两种方案独立读取同一预处理原图，数量为食物区域数。'}
+
+
+sam_model=None
+sam_lock=threading.Lock()
+def segment_local(image,prompt):
+    global sam_model
+    start=time.perf_counter()
+    with sam_lock:
+        weight=ROOT/'models/sam2.1_t.pt'
+        if not weight.is_file(): raise RuntimeError('缺少 SAM 权重，请先运行 scripts/demo_sam.py')
+        if sam_model is None: sam_model=SAM(str(weight))
+        kwargs={'points':[prompt['point']],'labels':[1]} if 'point' in prompt else {'bboxes':[prompt['box']]}
+        result=sam_model.predict(image,device='cpu',verbose=False,**kwargs)[0]
+        if result.masks is None or len(result.masks.data)==0: raise RuntimeError('未生成分割区域，请更换提示')
+        import numpy as np
+        mask=result.masks.data[0].cpu().numpy()>0.5
+        mask_image=Image.fromarray((mask*255).astype('uint8')).resize(image.size,Image.Resampling.NEAREST)
+        alpha=mask_image.point(lambda v:110 if v else 0)
+        tint=Image.new('RGBA',image.size,(0,113,227,0));tint.putalpha(alpha)
+        overlay=Image.alpha_composite(image.convert('RGBA'),tint).convert('RGB')
+    return {'status':'ok','seconds':round(time.perf_counter()-start,3),'image':'data:image/jpeg;base64,'+base64.b64encode(jpeg(overlay)).decode(),'note':'蓝色区域是 SAM 选中的掩膜，请检查是否选对目标；不代表类别或分割准确率。'}
+@app.post('/api/segment')
+async def segment(file:UploadFile=File(...),prompt:str=Form(...)):
+    raw=await file.read(10*1024*1024+1)
+    if len(raw)>10*1024*1024: raise HTTPException(413,'图片不能超过 10 MB')
+    try:
+        with Image.open(io.BytesIO(raw)) as source:
+            if source.width*source.height>25_000_000: raise HTTPException(400,'图片像素过大')
+            image=source.convert('RGB');image.thumbnail((1024,1024))
+    except (UnidentifiedImageError,OSError,Image.DecompressionBombError): raise HTTPException(400,'无法读取图片')
+    try:
+        obj=json.loads(prompt);w,h=image.size
+        import math
+        if not isinstance(obj,dict) or set(obj) not in ({'point'},{'box'}): raise ValueError()
+        coords=obj.get('point',obj.get('box'))
+        if not isinstance(coords,list) or len(coords)!=(2 if 'point' in obj else 4): raise ValueError()
+        if any(type(v) not in (float,int) or not math.isfinite(v) for v in coords): raise ValueError()
+        if 'point' in obj:
+            if not(0<=coords[0]<w and 0<=coords[1]<h): raise ValueError()
+        elif not(0<=coords[0]<coords[2]<=w and 0<=coords[1]<coords[3]<=h): raise ValueError()
+    except (ValueError,TypeError): raise HTTPException(400,'提示坐标无效')
+    return await safe_call(asyncio.to_thread,segment_local,image,obj)
