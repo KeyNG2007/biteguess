@@ -55,3 +55,16 @@ YOLO11n CPU 基线训练 10 轮，imgsz=320、batch=4、seed=42，总耗时约 2
 数据转换脚本：scripts/prepare_uecfood100.py；小样本训练：scripts/train_yolo_smoke.py；完整基线：scripts/train_yolo_baseline.py。转换读取 configs/detection_classes.json；已有转换结果时拒绝覆盖。权重位于 models/yolo_runs/baseline_10epochs/weights，不入库。
 
 scripts/demo_yolo.py 仍加载通用 COCO 权重，不是五类基线推理入口。完整启动指南与依赖清单待整理，当前尚未交付可运行双模型应用。
+
+## 本地双模型页面（2026-10-13）
+
+在项目根目录运行：
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn src.app:app --host 127.0.0.1 --port 8000
+```
+
+浏览器打开 http://127.0.0.1:8000 。本地 .env 按 .env.example 配置 DeepSeek；需要五类权重 models/yolo_runs/baseline_10epochs/weights/best.pt。上传图片会在确认后发送给 DeepSeek 并产生费用。支持最大 10 MB 图片，预处理限制最长边 1024，两个模型独立处理同一预处理图。YOLO 输入尺寸 320、阈值 0.25；该阈值是当前基线默认值，尚未完成正式阈值评估。
+
+双模型上传接口已实现，支持独立错误反馈、60 秒 API 超时、结果字段检查。首次 YOLO 耗时包含模型加载及排队，API 耗时包含网络请求，不将二者直接解释为纯计算速度。SAM、正式评估和运行视频仍待完成。

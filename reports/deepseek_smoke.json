@@ -1,0 +1,25 @@
+{
+  "model": "deepseek-flash",
+  "image": "data/uecfood100_detection/images/val/00bf5c116f23536f84ded385e8f06333ce27d62c937c41466cba6485140e2bea.jpg",
+  "result": {
+    "foods": [
+      {
+        "label": "rice",
+        "count": 1
+      }
+    ],
+    "unknown_present": false,
+    "uncertain": false,
+    "description": "电饭煲内装满煮熟的白米饭，呈一锅饭。"
+  },
+  "usage": {
+    "prompt_tokens": 430,
+    "completion_tokens": 42,
+    "total_tokens": 472,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 430
+  }
+}
