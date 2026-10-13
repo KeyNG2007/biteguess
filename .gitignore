@@ -9,6 +9,7 @@ work/
 # Local learning notes
 学习与交付路线.md
 docs/day01.md
+docs/录屏脚本.md
 
 # Local dataset-derived visualizations
 reports/**/*.jpg
