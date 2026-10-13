@@ -1,0 +1,740 @@
+[
+  {
+    "image": "1207cdf14dc86a8a727d10d0073042a3cc29e18c117382287cfec583419d88a6",
+    "truth": {
+      "rice": 1,
+      "salad": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 3.334,
+      "detections": [
+        {
+          "label": "salad",
+          "confidence": 0.8632,
+          "xyxy": [
+            244.1935272216797,
+            68.67015838623047,
+            468.2083435058594,
+            314.56890869140625
+          ]
+        },
+        {
+          "label": "rice",
+          "confidence": 0.771,
+          "xyxy": [
+            3.0675315856933594,
+            344.9718322753906,
+            148.2478485107422,
+            559.0221557617188
+          ]
+        }
+      ],
+      "counts": {
+        "salad": 1,
+        "rice": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 2.04,
+      "result": {
+        "foods": [
+          {
+            "label": "rice",
+            "count": 1
+          },
+          {
+            "label": "salad",
+            "count": 1
+          }
+        ],
+        "unknown_present": true,
+        "uncertain": false,
+        "description": "日式定食：白米饭、炸猪排配蔬菜沙拉、汤、小菜，炸猪排不属于允许类别。"
+      },
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 64,
+        "total_tokens": 528,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 464
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "1f0e849c7c75aba8d65f2c7314aa53b828b46d23c7cbb61a460e5f4a29c12fb4",
+    "truth": {
+      "pizza": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.078,
+      "detections": [
+        {
+          "label": "pizza",
+          "confidence": 0.8553,
+          "xyxy": [
+            42.46953582763672,
+            53.38719940185547,
+            565.4822998046875,
+            426.3580322265625
+          ]
+        },
+        {
+          "label": "dumplings",
+          "confidence": 0.2516,
+          "xyxy": [
+            37.47905349731445,
+            55.448368072509766,
+            562.173583984375,
+            429.4021911621094
+          ]
+        }
+      ],
+      "counts": {
+        "pizza": 1,
+        "dumplings": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": false,
+        "absolute_count_error": 1
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 2.34,
+      "result": {
+        "foods": [
+          {
+            "label": "pizza",
+            "count": 1
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "一个披萨，上面有奶酪、番茄、蘑菇和肉片。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 44,
+        "total_tokens": 385,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "1fee22346fe3f9e9fe16b610ebc57a8fd78029f2ae5ecbcbe9681958c5ad5a45",
+    "truth": {
+      "rice": 1,
+      "salad": 2
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.037,
+      "detections": [
+        {
+          "label": "salad",
+          "confidence": 0.7866,
+          "xyxy": [
+            362.4798583984375,
+            140.5386199951172,
+            592.3883666992188,
+            375.9896240234375
+          ]
+        },
+        {
+          "label": "rice",
+          "confidence": 0.7379,
+          "xyxy": [
+            0.0,
+            185.359375,
+            262.2043762207031,
+            431.7371520996094
+          ]
+        },
+        {
+          "label": "salad",
+          "confidence": 0.3062,
+          "xyxy": [
+            421.0110778808594,
+            129.04122924804688,
+            584.6156616210938,
+            375.4613952636719
+          ]
+        }
+      ],
+      "counts": {
+        "salad": 2,
+        "rice": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.325,
+      "result": {
+        "foods": [
+          {
+            "label": "rice",
+            "count": 1
+          }
+        ],
+        "unknown_present": true,
+        "uncertain": false,
+        "description": "一碗米饭、一碗汤、一盘炸肉排配沙拉，另有未知汤品与配菜。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 49,
+        "total_tokens": 390,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": false,
+        "absolute_count_error": 2
+      }
+    }
+  },
+  {
+    "image": "3617219e2bcf9b909b5cb2b06040a6df03d63172bfe29ea6dd11602b24cfc8f0",
+    "truth": {
+      "dumplings": 1,
+      "salad": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.079,
+      "detections": [
+        {
+          "label": "rice",
+          "confidence": 0.7821,
+          "xyxy": [
+            0.0,
+            206.4851837158203,
+            235.59275817871094,
+            431.5738525390625
+          ]
+        },
+        {
+          "label": "salad",
+          "confidence": 0.6383,
+          "xyxy": [
+            32.231117248535156,
+            12.262901306152344,
+            263.0683288574219,
+            198.315185546875
+          ]
+        },
+        {
+          "label": "dumplings",
+          "confidence": 0.5364,
+          "xyxy": [
+            303.8326721191406,
+            20.843738555908203,
+            473.5391540527344,
+            158.19212341308594
+          ]
+        },
+        {
+          "label": "noodles",
+          "confidence": 0.3798,
+          "xyxy": [
+            280.2076721191406,
+            179.66087341308594,
+            573.3867797851562,
+            447.0802307128906
+          ]
+        },
+        {
+          "label": "dumplings",
+          "confidence": 0.3771,
+          "xyxy": [
+            296.871337890625,
+            18.30745506286621,
+            600.0,
+            175.76632690429688
+          ]
+        },
+        {
+          "label": "pizza",
+          "confidence": 0.3252,
+          "xyxy": [
+            26.983200073242188,
+            8.828487396240234,
+            263.2138977050781,
+            193.64427185058594
+          ]
+        }
+      ],
+      "counts": {
+        "rice": 1,
+        "salad": 1,
+        "dumplings": 2,
+        "noodles": 1,
+        "pizza": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": false,
+        "absolute_count_error": 4
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.584,
+      "result": {
+        "foods": [
+          {
+            "label": "dumplings",
+            "count": 1
+          },
+          {
+            "label": "rice",
+            "count": 1
+          },
+          {
+            "label": "salad",
+            "count": 1
+          }
+        ],
+        "unknown_present": true,
+        "uncertain": false,
+        "description": "一桌日式定食，含饺子、米饭料理、沙拉和一碗汤（未知类别）。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 68,
+        "total_tokens": 409,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": false,
+        "absolute_count_error": 1
+      }
+    }
+  },
+  {
+    "image": "4062fb3bdc5f0ea1e251586d4072100fe3da29bb2da2b31d3a88363296ab461b",
+    "truth": {
+      "rice": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.043,
+      "detections": [
+        {
+          "label": "rice",
+          "confidence": 0.7452,
+          "xyxy": [
+            0.3850250244140625,
+            2.25164794921875,
+            480.0,
+            355.29998779296875
+          ]
+        }
+      ],
+      "counts": {
+        "rice": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.875,
+      "result": {
+        "foods": [
+          {
+            "label": "rice",
+            "count": 1
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "一碗炒饭，配有红姜丝。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 37,
+        "total_tokens": 378,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "46f7831c99dcb32eb9843119e2bc133f01f5abbd440947415bdee4dbc38cddcc",
+    "truth": {
+      "dumplings": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.049,
+      "detections": [
+        {
+          "label": "dumplings",
+          "confidence": 0.9439,
+          "xyxy": [
+            0.3529071807861328,
+            5.418229103088379,
+            249.32266235351562,
+            192.85646057128906
+          ]
+        }
+      ],
+      "counts": {
+        "dumplings": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.528,
+      "result": {
+        "foods": [
+          {
+            "label": "dumplings",
+            "count": 1
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "盘中是煎饺，筷子夹起一只饺子。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 41,
+        "total_tokens": 382,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "562a95c5407b081ad32e0cc903633c685ec2fbb55930ab9f4d7341e200585e88",
+    "truth": {
+      "noodles": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.074,
+      "detections": [
+        {
+          "label": "noodles",
+          "confidence": 0.6311,
+          "xyxy": [
+            20.47636604309082,
+            18.398263931274414,
+            434.9325256347656,
+            319.1649475097656
+          ]
+        }
+      ],
+      "counts": {
+        "noodles": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.167,
+      "result": {
+        "foods": [
+          {
+            "label": "noodles",
+            "count": 2
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "两碗清汤面，配葱花，筷子搭在碗上。"
+      },
+      "usage": {
+        "prompt_tokens": 341,
+        "completion_tokens": 44,
+        "total_tokens": 385,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 341
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 1
+      }
+    }
+  },
+  {
+    "image": "cb719449988a49adce24fa46f41ac959e051aa6aec1c83f3d267f2e1c65779c4",
+    "truth": {
+      "noodles": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.074,
+      "detections": [
+        {
+          "label": "noodles",
+          "confidence": 0.8326,
+          "xyxy": [
+            46.96563720703125,
+            46.38385009765625,
+            590.970947265625,
+            439.626708984375
+          ]
+        }
+      ],
+      "counts": {
+        "noodles": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.197,
+      "result": {
+        "foods": [
+          {
+            "label": "noodles",
+            "count": 1
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "一碗日式拉面，含面条、叉烧、鱼板和海苔。"
+      },
+      "usage": {
+        "prompt_tokens": 353,
+        "completion_tokens": 46,
+        "total_tokens": 399,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 353
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "db04a646a7f8ab82b43076a099321e60e6747a94bb2f501106651f08df77b79e",
+    "truth": {
+      "pizza": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.148,
+      "detections": [
+        {
+          "label": "pizza",
+          "confidence": 0.9574,
+          "xyxy": [
+            0.4307224154472351,
+            6.743489742279053,
+            199.58750915527344,
+            117.74459075927734
+          ]
+        }
+      ],
+      "counts": {
+        "pizza": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.85,
+      "result": {
+        "foods": [
+          {
+            "label": "pizza",
+            "count": 1
+          }
+        ],
+        "unknown_present": false,
+        "uncertain": false,
+        "description": "一张披萨，表面有深色肉块、奶酪和葱花。"
+      },
+      "usage": {
+        "prompt_tokens": 339,
+        "completion_tokens": 44,
+        "total_tokens": 383,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 339
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  },
+  {
+    "image": "efed96db98f68f31e1f0b202a5f1f6712b5b1f2c046e205945c9d45d6aec08a2",
+    "truth": {
+      "rice": 1,
+      "salad": 1
+    },
+    "yolo": {
+      "status": "ok",
+      "model": "YOLO11n 五类微调",
+      "seconds": 0.058,
+      "detections": [
+        {
+          "label": "rice",
+          "confidence": 0.8405,
+          "xyxy": [
+            7.011016845703125,
+            199.0093536376953,
+            313.7337341308594,
+            460.52984619140625
+          ]
+        },
+        {
+          "label": "salad",
+          "confidence": 0.7535,
+          "xyxy": [
+            363.4854736328125,
+            59.982635498046875,
+            600.9954833984375,
+            232.39151000976562
+          ]
+        }
+      ],
+      "counts": {
+        "rice": 1,
+        "salad": 1
+      },
+      "note": "耗时包含首次模型加载及排队；无框表示未检出，不等于确认未知类别。",
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    },
+    "vision": {
+      "status": "ok",
+      "model": "deepseek-flash",
+      "seconds": 1.229,
+      "result": {
+        "foods": [
+          {
+            "label": "rice",
+            "count": 1
+          },
+          {
+            "label": "salad",
+            "count": 1
+          }
+        ],
+        "unknown_present": true,
+        "uncertain": false,
+        "description": "一碗米饭、一盘卷心菜沙拉、一盘葱香肉菜和一碗汤，肉菜和汤不属于允许类别。"
+      },
+      "usage": {
+        "prompt_tokens": 353,
+        "completion_tokens": 63,
+        "total_tokens": 416,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 353
+      },
+      "evaluation": {
+        "class_set_correct": true,
+        "absolute_count_error": 0
+      }
+    }
+  }
+]

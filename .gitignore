@@ -16,3 +16,6 @@ reports/**/*.png
 yolo_demo_conf025/
 .env.*
 !.env.example
+
+# Local segmentation mask arrays
+reports/**/*.npz

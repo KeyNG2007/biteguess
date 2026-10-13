@@ -1,0 +1,19 @@
+{
+  "images": 10,
+  "limitations": "small sample; known foods only; unknown_present cannot be scored from selected-class annotations; no segmentation accuracy; not a reliable full-dataset estimate",
+  "yolo": {
+    "successful_images": 10,
+    "errors": 0,
+    "class_set_accuracy": 0.8,
+    "mean_absolute_region_count_error": 0.5,
+    "mean_seconds": 0.39740000000000003
+  },
+  "vision": {
+    "successful_images": 10,
+    "errors": 0,
+    "class_set_accuracy": 0.8,
+    "mean_absolute_region_count_error": 0.4,
+    "mean_seconds": 1.6135000000000002
+  },
+  "vision_total_tokens": 4055
+}

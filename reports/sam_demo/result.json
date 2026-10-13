@@ -1,0 +1,61 @@
+{
+  "image": "data/uecfood100_detection/images/val/00bf5c116f23536f84ded385e8f06333ce27d62c937c41466cba6485140e2bea.jpg",
+  "model": "sam2.1_t.pt",
+  "device": "cpu",
+  "point": [
+    400.0,
+    304.49999999999994
+  ],
+  "ground_truth_box": [
+    0.0,
+    8.999999999999975,
+    800.0,
+    600.0
+  ],
+  "experiments": {
+    "point": {
+      "seconds": 2.1260217998642474,
+      "masks": 1,
+      "prompt": {
+        "points": [
+          [
+            400.0,
+            304.49999999999994
+          ]
+        ],
+        "labels": [
+          1
+        ]
+      }
+    },
+    "ground_truth_box": {
+      "seconds": 2.0598182999528944,
+      "masks": 1,
+      "prompt": {
+        "bboxes": [
+          [
+            0.0,
+            8.999999999999975,
+            800.0,
+            600.0
+          ]
+        ]
+      }
+    },
+    "yolo_box": {
+      "seconds": 2.096983800176531,
+      "masks": 1,
+      "prompt": {
+        "bboxes": [
+          [
+            0.0,
+            9.169254302978516,
+            795.8275756835938,
+            596.82275390625
+          ]
+        ]
+      }
+    }
+  },
+  "note": "Prompt demonstration only; dataset has boxes, not segmentation ground truth. No segmentation accuracy claimed."
+}

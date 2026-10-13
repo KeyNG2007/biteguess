@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "split": "test",
+  "selection": "2 images containing each class; duplicates merged; may include other supported classes",
+  "images": [
+    "1207cdf14dc86a8a727d10d0073042a3cc29e18c117382287cfec583419d88a6",
+    "1f0e849c7c75aba8d65f2c7314aa53b828b46d23c7cbb61a460e5f4a29c12fb4",
+    "1fee22346fe3f9e9fe16b610ebc57a8fd78029f2ae5ecbcbe9681958c5ad5a45",
+    "3617219e2bcf9b909b5cb2b06040a6df03d63172bfe29ea6dd11602b24cfc8f0",
+    "4062fb3bdc5f0ea1e251586d4072100fe3da29bb2da2b31d3a88363296ab461b",
+    "46f7831c99dcb32eb9843119e2bc133f01f5abbd440947415bdee4dbc38cddcc",
+    "562a95c5407b081ad32e0cc903633c685ec2fbb55930ab9f4d7341e200585e88",
+    "cb719449988a49adce24fa46f41ac959e051aa6aec1c83f3d267f2e1c65779c4",
+    "db04a646a7f8ab82b43076a099321e60e6747a94bb2f501106651f08df77b79e",
+    "efed96db98f68f31e1f0b202a5f1f6712b5b1f2c046e205945c9d45d6aec08a2"
+  ],
+  "weights": "models/yolo_runs/baseline_10epochs/weights/best.pt",
+  "yolo_conf": 0.25,
+  "yolo_imgsz": 320,
+  "max_image_edge": 1024,
+  "vision_model": "deepseek-flash",
+  "metrics": "exact supported-class set match and sum absolute region-count errors; API errors separate",
+  "limitations": "small sample; known foods only; unknown_present cannot be scored from selected-class annotations; no segmentation accuracy; not a reliable full-dataset estimate"
+}
