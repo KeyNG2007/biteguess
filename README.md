@@ -8,7 +8,7 @@
 - DeepSeek 多模态分析：输出支持类别、数量、未知类别提示和简短描述。
 - 同一张预处理图片分别送入两条路线，结果并排展示，便于比较。
 - FastAPI 上传接口和浏览器页面。
-- SAM2.1 tiny 点提示、真实框提示和 YOLO 框提示实验。
+- 网页交互式 SAM2.1 tiny 分割：点击图片提供正点提示，或选择 YOLO 检测框作为提示；另外提供真实框提示对照实验。
 - 固定测试样本的双模型对比评测，结果位于 `reports/comparison/`。
 
 ## 支持类别
@@ -44,6 +44,7 @@ python -m venv .venv
 准备以下本地文件：
 
 - `models/yolo_runs/baseline_10epochs/weights/best.pt`
+- `models/sam2.1_t.pt`（网页分割功能需要）
 - `data/uecfood100_detection/`（需要重新准备数据或复现实验时）
 - `.env` 中的 DeepSeek 配置，可参考 `.env.example`
 
@@ -55,11 +56,17 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m uvicorn src.app:app --host 127.0.0.1 --port 8000
 ```
 
-浏览器打开 <http://127.0.0.1:8000>。上传图片后可以先只运行 YOLO；确认后再发送给 DeepSeek。接口限制单张图片最大 10 MB，并限制图片最长边和像素数量以控制资源消耗。
+浏览器打开 <http://127.0.0.1:8000>。提交分析时后端会并行运行 YOLO 和 DeepSeek，DeepSeek 请求需要有效配置并产生 API 费用。SAM 分割支持图片点提示和 YOLO 框提示。蓝色掩膜表示 SAM 选中的区域，需要核对是否覆盖目标。接口限制单张图片最大 10 MB，并限制图片最长边和像素数量以控制资源消耗。
 
 ## 数据准备、训练和推理
 
-复现训练前，将官方数据压缩包放在 `data/dataset100.zip`，并准备 Ultralytics YOLO11n 预训练权重 `models/yolo11n.pt`。转换脚本会生成训练所需的数据目录；已有转换结果时拒绝覆盖。单图推理命令从验证集中选择指定类别的样例。
+复现训练前，从 [官方页面](http://foodcam.mobi/dataset100.html) 获取数据压缩包，放在 `data/dataset100.zip`。下列命令通过 Ultralytics 获取公开的 YOLO11n 和 SAM2.1 tiny 权重，需要联网。通用 YOLO11n 不是项目五类模型，必须执行后续训练生成 `best.pt`。
+
+```powershell
+.\.venv\Scripts\python.exe -c "from pathlib import Path; from ultralytics import YOLO, SAM; Path('models').mkdir(exist_ok=True); YOLO('models/yolo11n.pt'); SAM('models/sam2.1_t.pt')"
+```
+
+转换脚本会生成训练所需的数据目录；已有转换结果时拒绝覆盖。单图推理命令从验证集中选择指定类别的样例。以下 CPU 训练在本项目环境中约需 23 分钟，实际时间取决于硬件。模型权重获取和校验方式见 [权重复现说明](docs/权重复现说明.md)。
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\prepare_uecfood100.py
