@@ -1,0 +1,7 @@
+fastapi==0.143.0
+uvicorn==0.54.0
+httpx==0.28.1
+python-multipart==0.0.32
+pillow==12.3.0
+ultralytics==8.4.175
+SQLAlchemy==2.0.46

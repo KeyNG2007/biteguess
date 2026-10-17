@@ -11,6 +11,7 @@ work/
 docs/day01.md
 docs/录屏脚本.md
 docs/个人感悟.md
+docs/第三阶段开发记录.md
 
 # Local dataset-derived visualizations
 reports/**/*.jpg
@@ -21,3 +22,6 @@ yolo_demo_conf025/
 
 # Local segmentation mask arrays
 reports/**/*.npz
+
+# Persistent application data
+storage/

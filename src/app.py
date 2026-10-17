@@ -3,15 +3,44 @@ from collections import Counter
 from pathlib import Path
 import httpx
 from PIL import Image, UnidentifiedImageError
+# Keep Pillow's decoder before Ultralytics replaces Image.open with a helper
+# that may attempt network package installation for unrecognized input.
+open_image=Image.open
+os.environ.setdefault('YOLO_AUTOINSTALL','false')
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from ultralytics import YOLO, SAM
+from fastapi import Query
+from pydantic import BaseModel, Field
+from src import history
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=['rice','noodles','dumplings','pizza','salad']
 for line in (ROOT/'.env').read_text(encoding='utf-8-sig').splitlines() if (ROOT/'.env').exists() else []:
     if line.strip() and not line.lstrip().startswith('#') and '=' in line:
         k,v=line.split('=',1); os.environ.setdefault(k.strip(),v.strip().strip(chr(34)).strip(chr(39)))
+YOLO_WEIGHTS=Path(os.getenv('YOLO_WEIGHTS',str(ROOT/'models/yolo_runs/baseline_10epochs/weights/best.pt')))
+SAM_WEIGHTS=Path(os.getenv('SAM_WEIGHTS',str(ROOT/'models/sam2.1_t.pt')))
 app=FastAPI(title='美食猜猜看')
+@app.get('/history',response_class=HTMLResponse)
+def history_page(): return (ROOT/'src/history.html').read_text(encoding='utf-8')
+@app.get('/api/history')
+def history_list(limit:int=Query(20,ge=1,le=100),offset:int=Query(0,ge=0)):
+    return history.listing(limit,offset)
+@app.get('/api/history/{record_id}')
+def history_detail(record_id:str):
+    result=history.get(record_id)
+    if result is None: raise HTTPException(404,'记录不存在')
+    return result
+class NoteUpdate(BaseModel):
+    note:str=Field(max_length=2000)
+@app.patch('/api/history/{record_id}')
+def history_update(record_id:str,body:NoteUpdate):
+    if not history.modify(record_id,note=body.note): raise HTTPException(404,'记录不存在')
+    return {'status':'ok'}
+@app.delete('/api/history/{record_id}')
+def history_delete(record_id:str):
+    if not history.modify(record_id,delete=True): raise HTTPException(404,'记录不存在')
+    return {'status':'ok'}
 model=None
 lock=threading.Lock()
 def jpeg(image):
@@ -20,7 +49,8 @@ def local_predict(image):
     global model
     start=time.perf_counter()
     with lock:
-        if model is None: model=YOLO(str(ROOT/'models/yolo_runs/baseline_10epochs/weights/best.pt'))
+        if not YOLO_WEIGHTS.is_file(): raise RuntimeError('缺少 YOLO 权重，请检查模型配置')
+        if model is None: model=YOLO(str(YOLO_WEIGHTS))
         if list(model.names.values())!=NAMES: raise RuntimeError('模型类别配置不匹配')
         result=model.predict(image,device='cpu',imgsz=320,conf=.25,verbose=False)[0]
         boxes=[{'label':model.names[int(b.cls.item())],'confidence':round(float(b.conf.item()),4),'xyxy':b.xyxy[0].tolist()} for b in result.boxes]
@@ -55,19 +85,27 @@ async def local_async(image): return await asyncio.to_thread(local_predict,image
 @app.get('/',response_class=HTMLResponse)
 def index(): return (ROOT/'src/index.html').read_text(encoding='utf-8')
 @app.get('/health')
-def health(): return {'status':'ok','weights_present':(ROOT/'models/yolo_runs/baseline_10epochs/weights/best.pt').is_file()}
+def health(): return {'status':'ok','weights_present':YOLO_WEIGHTS.is_file()}
+@app.get('/ready')
+def ready():
+    from fastapi.responses import JSONResponse
+    checks={'yolo_weights_present':YOLO_WEIGHTS.is_file(),'sam_weights_present':SAM_WEIGHTS.is_file(),'vision_key_configured':bool(os.getenv('DEEPSEEK_API_KEY') or os.getenv('VISION_API_KEY'))}
+    configured=all(checks.values())
+    return JSONResponse(status_code=200 if configured else 503,content={'status':'configured' if configured else 'not_configured','checks':checks,'note':'仅检查必要文件和配置；不代表模型已加载或外部 API 可达。'})
 @app.post('/api/analyze')
 async def analyze(file:UploadFile=File(...)):
     raw=await file.read(10*1024*1024+1)
     if len(raw)>10*1024*1024: raise HTTPException(413,'图片不能超过 10 MB')
     try:
-        with Image.open(io.BytesIO(raw)) as source:
+        with open_image(io.BytesIO(raw),formats=('JPEG','PNG','WEBP')) as source:
             if source.width*source.height>25_000_000: raise HTTPException(400,'图片像素过大')
             image=source.convert('RGB'); image.thumbnail((1024,1024))
     except (UnidentifiedImageError,OSError,Image.DecompressionBombError): raise HTTPException(400,'无法读取图片，请使用 JPEG、PNG 或 WebP 图片')
     processed=jpeg(image)
     yolo,vision=await asyncio.gather(safe_call(local_async,image),safe_call(remote_predict,processed))
-    return {'yolo':yolo,'vision':vision,'input_size':image.size,'scope':'两种方案独立读取同一预处理原图，数量为食物区域数。'}
+    result={'yolo':yolo,'vision':vision,'input_size':image.size,'scope':'两种方案独立读取同一预处理原图，数量为食物区域数。'}
+    result['record_id']=await asyncio.to_thread(history.save,'data:image/jpeg;base64,'+base64.b64encode(processed).decode(),result)
+    return result
 
 
 sam_model=None
@@ -76,7 +114,7 @@ def segment_local(image,prompt):
     global sam_model
     start=time.perf_counter()
     with sam_lock:
-        weight=ROOT/'models/sam2.1_t.pt'
+        weight=SAM_WEIGHTS
         if not weight.is_file(): raise RuntimeError('缺少 SAM 权重，请先运行 scripts/demo_sam.py')
         if sam_model is None: sam_model=SAM(str(weight))
         kwargs={'points':[prompt['point']],'labels':[1]} if 'point' in prompt else {'bboxes':[prompt['box']]}
@@ -94,7 +132,7 @@ async def segment(file:UploadFile=File(...),prompt:str=Form(...)):
     raw=await file.read(10*1024*1024+1)
     if len(raw)>10*1024*1024: raise HTTPException(413,'图片不能超过 10 MB')
     try:
-        with Image.open(io.BytesIO(raw)) as source:
+        with open_image(io.BytesIO(raw),formats=('JPEG','PNG','WEBP')) as source:
             if source.width*source.height>25_000_000: raise HTTPException(400,'图片像素过大')
             image=source.convert('RGB');image.thumbnail((1024,1024))
     except (UnidentifiedImageError,OSError,Image.DecompressionBombError): raise HTTPException(400,'无法读取图片')

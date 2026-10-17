@@ -84,6 +84,12 @@ SAM 提示实验：
 
 YOLO11n 基线使用 `imgsz=320`、`batch=4`、`epochs=10` 和 `seed=42`。验证集指标为 Precision 0.7907、Recall 0.8009、mAP50 0.8053、mAP50-95 0.5657。固定 10 张测试图片的双模型对比结果及限制说明见 [交付说明与评测记录](docs/交付说明与评测记录.md)。
 
+## 第三阶段部署与历史记录
+
+分析结果自动保存到 SQLAlchemy + SQLite，浏览器打开 `/history` 可分页查看原图与双路结果、修改备注或删除记录。数据库和图片内容随 `storage/` 挂载保留；本地默认位置为 `work/storage/`。单路分析失败也会保存其状态。
+
+Linux 容器部署与验证结果见 [Linux 部署说明](docs/Linux部署说明.md)。服务运行依赖使用 `requirements-server.txt`，与第二阶段训练环境清单分开。应用无多用户认证，默认仅通过 SSH 隧道访问服务器 nginx，不直接公开历史数据和收费推理入口。
+
 ## 仓库内容
 
 - `src/`：FastAPI 服务和前端页面
